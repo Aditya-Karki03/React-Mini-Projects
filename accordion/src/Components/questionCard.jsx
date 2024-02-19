@@ -1,46 +1,41 @@
 import React from "react";
-import { useState } from "react";
 import data from "./data";
 export default function Questions(){
-    const[selected, setSelected]=useState();
-    const[MultipleSelect,setMultipleSelect]=useState(false);
-    const[arrOfId,setArrOfId]=useState([]);
-    function handleSingleSelection(CurrId){
-        selected===CurrId?setSelected(null):setSelected(CurrId);
-       
-    }
-    function handleMultipleSelection(currId) {
-        const copyArrOfId = [...arrOfId];
-        const findIndexOfCurrId = copyArrOfId.indexOf(currId);
-        if (findIndexOfCurrId === -1) {
-          copyArrOfId.push(currId);
-        } else {
-          copyArrOfId.splice(findIndexOfCurrId, 1);
-        }
-        setArrOfId(copyArrOfId);
+  const[selected,setSelected]=React.useState();
+  const[multiSelect,setMultiSelect]=React.useState(false);
+  const[arrOfId,setArrOfId]=React.useState([]);
+  
+  function singleSelection(CurrId){
+    if(selected==CurrId)  setSelected(null);
+    else  setSelected(CurrId);
+  }
+
+  const multiSelection=(CurrId)=>{
+    const arr=[...arrOfId];
+    const indexOfCurrId=arr.indexOf(CurrId);
+    if(indexOfCurrId==-1) arr.push(CurrId);
+    else  arr.splice(indexOfCurrId,1);
+    setArrOfId(arr)
+  }
+  return (
+    <div className="main-container">
+      <button onClick={()=>setMultiSelect(!multiSelect)}>MultipleSelection</button>
+      {
+        data && data.length>0?data.map((dataItem)=>(
+          <>
+            <div className="question">{dataItem.question}</div>
+            <span onClick={multiSelect?()=>multiSelection(dataItem.id):()=>singleSelection(dataItem.id)}>+</span> 
+            {
+             multiSelect?arrOfId.indexOf(dataItem.id)!==-1 && (<div className="answer">{dataItem.answer}</div>
+              ): selected==dataItem.id?<div className="answer">{dataItem.answer}</div>:null
+              // 
+            }
+          </>
+        )
+          ):<div className="message">No data found</div>
+          
       }
-   
-    return(
-      <div className="main-container">
-        <button onClick={()=>MultipleSelect?setMultipleSelect(false):setMultipleSelect(true)}>Multiple Selection</button>
-        {
-            data && data.length>0 ?
-            data.map(dataItem=><div className="item">
-                <div className="title">
-                    <h3>{dataItem.question}</h3>
-                </div>
-                <span onClick={()=>handleSingleSelection(dataItem.id)}>+</span>
-                <div className="answer">
-                    {   MultipleSelect?
-                    handleMultipleSelection(dataItem.id):(selected===dataItem.id?<div className="answer">
-                            {dataItem.answer};
-                        </div>:null)
-                        
-                    }
-                </div>
-            </div>)
-            :<div>No data found</div>
-        }
-      </div>
-    )
+      
+    </div>
+  )
 }
