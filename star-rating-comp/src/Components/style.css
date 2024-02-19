@@ -1,0 +1,10 @@
+.active {
+    background-color: #fff700;
+  }
+  
+  .inactive {
+    background-color: red;
+  }
+  box-icon{
+    color:red
+  }
