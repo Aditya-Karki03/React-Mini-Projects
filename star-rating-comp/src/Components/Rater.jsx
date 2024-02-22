@@ -21,7 +21,7 @@ export default function Rater({noOfStars=5}){
                          type='solid'
                          name='star'
                          onClick={()=>handleClick(index)}
-                         color={ind>index?'#fff':'#000000'}
+                         color={ind>index?'#ffffff':'#000000'}
                          />
                     )
                     
